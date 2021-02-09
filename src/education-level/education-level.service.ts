@@ -1,5 +1,5 @@
 import { Injectable ,Inject ,NotFoundException} from '@nestjs/common';
-import { CONSTANT } from 'src/constant/constant';
+import { CONSTANT } from './../constant/constant'
 import { CreateEducationLevelDto } from './dto/create-education-level.dto';
 import { UpdateEducationLevelDto } from './dto/update-education-level.dto';
 import { EducationLevel } from './entities/education-level.entity';
@@ -12,30 +12,32 @@ export class EducationLevelService {
 ){}
 
   async create(createEducationLevelDto:CreateEducationLevelDto) {
-    const educationLevel = new EducationLevel()
-    educationLevel.name = createEducationLevelDto.name
-    await this.educationLevelRepository.save(createEducationLevelDto)
-    return { status:200, error:undefined, data:educationLevel} 
+    const dto = new EducationLevel()
+    dto.name = createEducationLevelDto.name
+    const educationLevel = await this.educationLevelRepository.save(dto)
+    return { data: educationLevel } 
   }
 
   
-findAll(): Promise<EducationLevel[]> {
-    return this.educationLevelRepository.find({ });
+  async findAll() {
+    const educationLevel = await this.educationLevelRepository.find({ });
+    return  {data:educationLevel }
 }
 
-async findOne(id: number): Promise<EducationLevel> {
+async findOne(id: number) {
   const educationLevel = await this.educationLevelRepository.findOne(id);
-  if (!educationLevel) throw new NotFoundException();
-  return educationLevel;
+  if (!educationLevel) throw new NotFoundException('');
+  return {data:educationLevel};
 }
 
   async update(id: number, updateEducationLevelDto: UpdateEducationLevelDto) {
     await this.educationLevelRepository.update({id},updateEducationLevelDto)
-    return this.educationLevelRepository.findOne({id});
+    const educationLevel = await this.educationLevelRepository.findOne({id});
+    return {data:educationLevel}
   }
 
   async remove(id: number) {
-    await this.educationLevelRepository.delete({id}) 
-    return 'fuck';
+   const educationLevel = await this.educationLevelRepository.delete({id}) 
+    return {data:educationLevel};
   }
 }
