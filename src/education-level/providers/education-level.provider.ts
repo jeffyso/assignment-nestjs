@@ -1,5 +1,5 @@
 import { Connection, Repository } from 'typeorm';
-import { CONSTANT } from 'src/constant/constant';
+import { CONSTANT } from '../../constant/constant';
 import { EducationLevelRepository } from '../repository/education-level.repository';
 
 
