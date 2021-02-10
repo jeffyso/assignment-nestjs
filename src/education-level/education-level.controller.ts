@@ -5,7 +5,7 @@ import { UpdateEducationLevelDto } from './dto/update-education-level.dto';
 
 @Controller('education-level')
 export class EducationLevelController {
-  constructor(private readonly educationLevelService: EducationLevelService) {}
+  constructor(private readonly educationLevelService: EducationLevelService) { }
 
   @Post()
   create(@Body() createEducationLevelDto: CreateEducationLevelDto) {
@@ -30,5 +30,10 @@ export class EducationLevelController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.educationLevelService.remove(+id);
+  }
+
+  @Delete()
+  cleanAll() {
+    return this.educationLevelService.cleanAll();
   }
 }
