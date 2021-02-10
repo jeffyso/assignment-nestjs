@@ -1,9 +1,19 @@
 import { Module } from '@nestjs/common';
-import { databaseProviders } from './database.provider';
-
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { EducationLevelModule } from '../education-level/education-level.module';
 @Module({
-    providers: [...databaseProviders],
-    exports: [...databaseProviders],
-})
-
+    imports: [
+      TypeOrmModule.forRoot({
+        type: 'postgres',
+        host: 'localhost',
+        port: 5432,
+        username: 'postgres',
+        password: '1234',
+        database: 'assignment-nest',
+        autoLoadEntities: true,
+        synchronize: true,
+      }),
+      EducationLevelModule,
+    ],
+  })
 export class DatabaseModule {}
