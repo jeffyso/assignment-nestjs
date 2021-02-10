@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { databaseProviders } from 'src/database/database.provider';
 import { DatabaseModule } from '../database/database.module';
 import { CreateEducationLevelDto } from './dto/create-education-level.dto';
 import { EducationLevelController } from './education-level.controller';
@@ -7,12 +8,12 @@ import { educationLevelProviders } from './providers/education-level.provider';
 import { EducationLevelRepository } from './repository/education-level.repository';
 
 
-describe.only('EducationLevelController', () => {
+describe('EducationLevelController', () => {
   let controller: EducationLevelController;
-  let db: EducationLevelService
+  let module: TestingModule;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       providers: [EducationLevelService, ...educationLevelProviders],
       controllers: [EducationLevelController],
       imports: [
@@ -21,22 +22,25 @@ describe.only('EducationLevelController', () => {
     }).compile();
 
     controller = module.get<EducationLevelController>(EducationLevelController);
-    db = module.get<EducationLevelService>(EducationLevelService);
   });
 
   afterEach(async () => {
-    db.cleanAll()
+    await controller.cleanAll()
+    await module.close();
   })
-  describe('Method Post', () => {
-    it('should be defined', async () => {
+
+  afterAll(() => module.close())
+
+  describe('when create EducationLevel by method POST', () => {
+    it('should the correct result', async () => {
       const data = new CreateEducationLevelDto();
-      data.name = "sddsads"
+      data.name = "JZO"
       const response = await controller.create(data)
       expect(controller).toBeDefined();
       delete response.data.id
       expect(response).toEqual({
         data: {
-          name: "sddsads"
+          name: "JZO"
         }
       })
     });
