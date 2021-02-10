@@ -18,7 +18,7 @@ describe('EducationLevelService', () => {
 
     service = module.get<EducationLevelService>(EducationLevelService);
   });
-    it('should be defined', () => {
-      expect(service).toBeDefined;
-    })
+  it('should be defined', () => {
+    expect(service).toBeDefined;
+  })
 });
