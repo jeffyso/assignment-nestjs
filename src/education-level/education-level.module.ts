@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { EducationLevelService } from './education-level.service';
 import { EducationLevelController } from './education-level.controller';
-import { educationLevelProviders } from './providers/education-level.provider';
-import { DatabaseModule } from 'src/database/database.module';
+import { EducationLevel } from './entities/education-level.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  providers: [EducationLevelService, ...educationLevelProviders],
+  providers: [EducationLevelService],
   controllers: [EducationLevelController],
   imports: [
-    DatabaseModule,
+    TypeOrmModule.forFeature([EducationLevel])
   ],
   exports: [
     EducationLevelService,
