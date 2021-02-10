@@ -42,7 +42,6 @@ export class EducationLevelService {
   }
 
   async cleanAll() {
-    await this.educationLevelRepository.clear()
-    return this.educationLevelRepository.find()
+    return this.educationLevelRepository.clear()
   }
 }
