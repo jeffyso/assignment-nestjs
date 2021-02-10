@@ -1,20 +1,29 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { createTestConfiguration } from '../../src/database/test.db';
 import { DatabaseModule } from '../database/database.module';
 import { EducationLevelController } from '../education-level/education-level.controller';
 import { EducationLevelService } from '../education-level/education-level.service';
-import { educationLevelProviders } from '../education-level/providers/education-level.provider';
+import { EducationLevel } from './entities/education-level.entity';
+import { EducationLevelRepository } from './repository/education-level.repository';
 
-describe.skip('EducationLevelService', () => {
+describe('EducationLevelService', () => {
   let service: EducationLevelService;
   let module: TestingModule;
 
   beforeEach(async () => {
     module = await Test.createTestingModule({
-      providers: [EducationLevelService, ...educationLevelProviders],
+      providers: [EducationLevelService,EducationLevelRepository],
       controllers: [EducationLevelController],
       imports: [
-        DatabaseModule,
+        EducationLevelRepository,
+        TypeOrmModule.forFeature([EducationLevel]),
+        TypeOrmModule.forRoot(createTestConfiguration([EducationLevel]))
       ],
+      exports: [
+        EducationLevelRepository,
+        EducationLevelService,
+      ]
     }).compile();
 
     service = module.get<EducationLevelService>(EducationLevelService);
@@ -22,8 +31,9 @@ describe.skip('EducationLevelService', () => {
   afterEach(async () => {
     await module.close();
   })
-  afterAll(async () => await module.close())
-  it('should be defined', () => {
-    expect(service).toBeDefined;
+  describe('test', () => {
+    it('should be defined', () => {
+      expect(service).toBeDefined;
+    })
   })
 });
