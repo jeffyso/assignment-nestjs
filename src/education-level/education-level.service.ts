@@ -1,4 +1,6 @@
 import { Injectable, Inject, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CONSTANT } from './../constant/constant'
 import { CreateEducationLevelDto } from './dto/create-education-level.dto';
 import { UpdateEducationLevelDto } from './dto/update-education-level.dto';
@@ -8,8 +10,8 @@ import { EducationLevelRepository } from './repository/education-level.repositor
 @Injectable()
 export class EducationLevelService {
   constructor(
-    @Inject(CONSTANT.EDUCATION_LEVEL_REPOSITORY) private educationLevelRepository: EducationLevelRepository,
-  ) { }
+    @InjectRepository(EducationLevel) private educationLevelRepository: Repository<EducationLevel>
+    ) { }
 
   async create(createEducationLevelDto: CreateEducationLevelDto) {
     const dto = new EducationLevel()
