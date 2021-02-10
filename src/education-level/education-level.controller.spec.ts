@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { databaseProviders } from 'src/database/database.provider';
-import { DatabaseModule } from '../database/database.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { createTestConfiguration } from '../../src/database/test.db';
 import { CreateEducationLevelDto } from './dto/create-education-level.dto';
+import { UpdateEducationLevelDto } from './dto/update-education-level.dto';
 import { EducationLevelController } from './education-level.controller';
 import { EducationLevelService } from './education-level.service';
-import { educationLevelProviders } from './providers/education-level.provider';
-import { EducationLevelRepository } from './repository/education-level.repository';
+import { EducationLevel } from './entities/education-level.entity';
 
 
 describe('EducationLevelController', () => {
@@ -14,22 +14,22 @@ describe('EducationLevelController', () => {
 
   beforeEach(async () => {
     module = await Test.createTestingModule({
-      providers: [EducationLevelService, ...educationLevelProviders],
+      providers: [EducationLevelService],
       controllers: [EducationLevelController],
       imports: [
-        DatabaseModule
-      ],
+        TypeOrmModule.forFeature([EducationLevel]),
+        TypeOrmModule.forRoot(createTestConfiguration([EducationLevel]))
+      ]
     }).compile();
 
     controller = module.get<EducationLevelController>(EducationLevelController);
+    await controller.cleanAll()
   });
 
   afterEach(async () => {
     await controller.cleanAll()
-    await module.close();
+    await module.close()
   })
-
-  afterAll(() => module.close())
 
   describe('when create EducationLevel by method POST', () => {
     it('should the correct result', async () => {
@@ -44,5 +44,46 @@ describe('EducationLevelController', () => {
         }
       })
     });
+  })
+  describe('when create EducationLevel by method GET', () => {
+    it('should the correct result', async () => {
+      const res = await controller.findAll()
+      expect(res).toEqual({ data: [] })
+    })
+  })
+  describe('when create EducationLevel by method PUT by ID', () => {
+    it('should the correct result', async () => {
+      const data = new CreateEducationLevelDto();
+      data.name = "JZO"
+      const response = await controller.create(data)
+      const up = new UpdateEducationLevelDto;
+      up.name = "SA"
+      const res = await controller.update(response.data.id.toString(), up)
+      expect(res).toEqual(
+        { data:{ id: 1, name: 'SA' } }
+      )
+    })
+  })
+
+  describe('when create EducationLevel by method GET by ID', () => {
+    it('should the correct result', async () => {
+      const data = new CreateEducationLevelDto();
+      data.name = "JZO"
+      const response = await controller.create(data)
+      const res = await controller.findOne(response.data.id.toString())
+      expect(res).toEqual(
+        { data: { id: 1, name: 'JZO' } }
+      )
+    })
+  })
+
+  describe('when create EducationLevel by method DELETE', () => {
+    it('should the correct result', async () => {
+      const data = new CreateEducationLevelDto();
+      data.name = "JZO"
+      const response = await controller.create(data)
+      const res = await controller.remove(response.data.id.toString())
+      expect(res).toEqual({ data: { raw: [] } })
+    })
   })
 });
