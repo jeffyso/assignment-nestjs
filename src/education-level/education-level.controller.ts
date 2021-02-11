@@ -18,17 +18,17 @@ export class EducationLevelController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.educationLevelService.findOne(+id);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateEducationLevelDto: UpdateEducationLevelDto) {
+  update(@Param('id') id: number, @Body() updateEducationLevelDto: UpdateEducationLevelDto) {
     return this.educationLevelService.update(+id, updateEducationLevelDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.educationLevelService.remove(+id);
   }
 
