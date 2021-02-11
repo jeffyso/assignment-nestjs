@@ -33,11 +33,13 @@ export class EducationLevelService {
   async update(id: number, updateEducationLevelDto: UpdateEducationLevelDto) {
     await this.educationLevelRepository.update({ id }, updateEducationLevelDto)
     const educationLevel = await this.educationLevelRepository.findOne({ id });
+    if (!educationLevel) throw new NotFoundException('');
     return { data: educationLevel }
   }
 
   async remove(id: number) {
     const educationLevel = await this.educationLevelRepository.delete({ id })
+    if (!educationLevel) throw new NotFoundException('');
     return { data: educationLevel };
   }
 
