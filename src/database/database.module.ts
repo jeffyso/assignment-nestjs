@@ -12,6 +12,7 @@ import { EducationLevelModule } from '../education-level/education-level.module'
         database: 'assignment-nest',
         autoLoadEntities: true,
         synchronize: true,
+        keepConnectionAlive:true
       }),
       EducationLevelModule,
     ],
