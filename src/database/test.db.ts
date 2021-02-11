@@ -2,12 +2,33 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { EntitySchema } from 'typeorm';
 type Entity = Function | string | EntitySchema<any>;
 export const createTestConfiguration = (
-  entities: Entity[],
+    entities: Entity[],
 ): TypeOrmModuleOptions => ({
-  type: 'sqlite',
-  database: ':memory:',
-  entities,
-  dropSchema: true,
-  synchronize: true,
-  logging: false,
+    type: 'postgres',
+    database: 'test',
+    entities,
+    host: 'localhost',
+    port: 5432,
+    username: 'postgres',
+    password: '1234',
+    dropSchema: true,
+    synchronize: true,
+    logging: false,
+    autoLoadEntities: true,
+    keepConnectionAlive: true
+
 });
+
+// export const createTestConfiguration = (
+//   entities: Entity[],
+// ): TypeOrmModuleOptions => ({
+//     type: 'postgres',
+//     host: 'localhost',
+//     port: 5432,
+//     username: 'postgres',
+//     password: '1234',
+//     database: 'test',
+//     synchronize: true,
+//     autoLoadEntities:true,
+//     keepConnectionAlive:true
+// });
