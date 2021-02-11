@@ -32,12 +32,14 @@ describe('EducationLevelController', () => {
     await module.close()
   })
 
-  describe('when create EducationLevel by method POST', () => {
+  describe('When create from EducationLevel by method POST', () => {
     it('should the correct result', async () => {
       const data = new CreateEducationLevelDto();
       data.name = "JZO"
+
       const response = await controller.create(data)
       delete response.data.id
+
       expect(response).toEqual({
         data: {
           name: "JZO"
@@ -45,70 +47,85 @@ describe('EducationLevelController', () => {
       })
     });
   })
+
   describe('when get EducationLevel by method GET', () => {
     it('should the correct result', async () => {
       const res = await controller.findAll()
+
       expect(res).toEqual({ data: [] })
     })
   })
+
   describe('when update EducationLevel by method PUT by ID', () => {
     it('should the correct result', async () => {
       const data = new CreateEducationLevelDto();
       data.name = "JZO"
       const response = await controller.create(data)
+
       const up = new UpdateEducationLevelDto;
       up.name = "SA"
       const res = await controller.update(response.data.id, up)
+
       expect(res).toEqual(
         { data: { id: response.data.id, name: 'SA' } }
       )
     })
-
-
   })
 
-  describe('when get EducationLevel by method PUT by ID return error', () => {
+  describe('when update from EducationLevel by method PUT return error', () => {
     it('should return 404', async () => {
       const ID = 999
-      const res = async () => { await controller.findOne(ID) }
+      const up = new UpdateEducationLevelDto;
+      up.name = "SA"
+      
+      const res = async () =>  await controller.update(ID , up) 
+      
       expect(res()).rejects.toThrow(NotFoundException)
     })
   })
-
-  describe('when get EducationLevel by method GET by ID', () => {
+  
+  describe('when get by id from EducationLevel method GET', () => {
     it('should the correct result', async () => {
       const data = new CreateEducationLevelDto();
       data.name = "JZO"
       const response = await controller.create(data)
+      
       const res = await controller.findOne(response.data.id)
+      
       expect(res).toEqual(
         { data: { id: response.data.id, name: 'JZO' } }
-      )
+        )
+      })
     })
-  })
-
-  describe('when get EducationLevel by method GET by ID return error', () => {
-    it('should return 404', async () => {
-      const ID = 999
-      const res = async () => { await controller.findOne(ID) }
-      expect(res()).rejects.toThrow(NotFoundException)
+    
+    describe('when get by id from EducationLevel method GET return error', () => {
+      it('should return 404', async () => {
+        const ID = 999
+  
+        const res = async () => { await controller.findOne(ID) }
+  
+        expect(res()).rejects.toThrow(NotFoundException)
+      })
     })
-  })
 
-  describe('when delete EducationLevel by method DELETE', () => {
+  describe('when delete from EducationLevel by method DELETE', () => {
     it('should the correct result', async () => {
       const data = new CreateEducationLevelDto();
       data.name = "JZO"
       const response = await controller.create(data)
+
       const res = await controller.remove(response.data.id)
+
       expect(res).toEqual({ data: { raw: [], affected: 1 } })
     })
   })
 
-  describe('when get EducationLevel by method GET by ID return error', () => {
+  describe('when delete from EducationLevel by method DELETE return error', () => {
     it('should return 404', async () => {
       const ID = 999
+
       const res = await controller.remove(ID)
+
       expect(res).toEqual({ data: { raw: [], affected: 0 } })
     })
   })
