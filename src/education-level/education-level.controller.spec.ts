@@ -1,3 +1,4 @@
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { createTestConfiguration } from '../../src/database/test.db';
@@ -57,10 +58,20 @@ describe('EducationLevelController', () => {
       const response = await controller.create(data)
       const up = new UpdateEducationLevelDto;
       up.name = "SA"
-      const res = await controller.update(response.data.id.toString(), up)
+      const res = await controller.update(response.data.id, up)
       expect(res).toEqual(
-        { data:{ id: 1, name: 'SA' } }
+        { data: { id: response.data.id, name: 'SA' } }
       )
+    })
+
+
+  })
+
+  describe('when get EducationLevel by method PUT by ID return error', () => {
+    it('should return 404', async () => {
+      const ID = 999
+      const res = async () => { await controller.findOne(ID) }
+      expect(res()).rejects.toThrow(NotFoundException)
     })
   })
 
@@ -69,10 +80,18 @@ describe('EducationLevelController', () => {
       const data = new CreateEducationLevelDto();
       data.name = "JZO"
       const response = await controller.create(data)
-      const res = await controller.findOne(response.data.id.toString())
+      const res = await controller.findOne(response.data.id)
       expect(res).toEqual(
-        { data: { id: 1, name: 'JZO' } }
+        { data: { id: response.data.id, name: 'JZO' } }
       )
+    })
+  })
+
+  describe('when get EducationLevel by method GET by ID return error', () => {
+    it('should return 404', async () => {
+      const ID = 999
+      const res = async () => { await controller.findOne(ID) }
+      expect(res()).rejects.toThrow(NotFoundException)
     })
   })
 
@@ -81,8 +100,16 @@ describe('EducationLevelController', () => {
       const data = new CreateEducationLevelDto();
       data.name = "JZO"
       const response = await controller.create(data)
-      const res = await controller.remove(response.data.id.toString())
-      expect(res).toEqual({ data: { raw: [] } })
+      const res = await controller.remove(response.data.id)
+      expect(res).toEqual({ data: { raw: [], affected: 1 } })
+    })
+  })
+
+  describe('when get EducationLevel by method GET by ID return error', () => {
+    it('should return 404', async () => {
+      const ID = 999
+      const res = await controller.remove(ID)
+      expect(res).toEqual({ data: { raw: [], affected: 0 } })
     })
   })
 });
