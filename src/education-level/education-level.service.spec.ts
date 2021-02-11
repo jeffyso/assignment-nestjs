@@ -5,23 +5,19 @@ import { DatabaseModule } from '../database/database.module';
 import { EducationLevelController } from '../education-level/education-level.controller';
 import { EducationLevelService } from '../education-level/education-level.service';
 import { EducationLevel } from './entities/education-level.entity';
-import { EducationLevelRepository } from './repository/education-level.repository';
-
 describe('EducationLevelService', () => {
   let service: EducationLevelService;
   let module: TestingModule;
 
   beforeEach(async () => {
     module = await Test.createTestingModule({
-      providers: [EducationLevelService,EducationLevelRepository],
+      providers: [EducationLevelService],
       controllers: [EducationLevelController],
       imports: [
-        EducationLevelRepository,
         TypeOrmModule.forFeature([EducationLevel]),
         TypeOrmModule.forRoot(createTestConfiguration([EducationLevel]))
       ],
       exports: [
-        EducationLevelRepository,
         EducationLevelService,
       ]
     }).compile();
