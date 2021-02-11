@@ -36,7 +36,6 @@ describe('EducationLevelController', () => {
       const data = new CreateEducationLevelDto();
       data.name = "JZO"
       const response = await controller.create(data)
-      expect(controller).toBeDefined();
       delete response.data.id
       expect(response).toEqual({
         data: {
@@ -45,13 +44,13 @@ describe('EducationLevelController', () => {
       })
     });
   })
-  describe('when create EducationLevel by method GET', () => {
+  describe('when get EducationLevel by method GET', () => {
     it('should the correct result', async () => {
       const res = await controller.findAll()
       expect(res).toEqual({ data: [] })
     })
   })
-  describe('when create EducationLevel by method PUT by ID', () => {
+  describe('when update EducationLevel by method PUT by ID', () => {
     it('should the correct result', async () => {
       const data = new CreateEducationLevelDto();
       data.name = "JZO"
@@ -65,7 +64,7 @@ describe('EducationLevelController', () => {
     })
   })
 
-  describe('when create EducationLevel by method GET by ID', () => {
+  describe('when get EducationLevel by method GET by ID', () => {
     it('should the correct result', async () => {
       const data = new CreateEducationLevelDto();
       data.name = "JZO"
@@ -77,7 +76,7 @@ describe('EducationLevelController', () => {
     })
   })
 
-  describe('when create EducationLevel by method DELETE', () => {
+  describe('when delete EducationLevel by method DELETE', () => {
     it('should the correct result', async () => {
       const data = new CreateEducationLevelDto();
       data.name = "JZO"
